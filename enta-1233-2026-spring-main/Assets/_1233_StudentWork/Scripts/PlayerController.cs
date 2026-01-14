@@ -1,9 +1,14 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+
 
 public class PlayerController : MonoBehaviour
 {
-    public void Move()
+    private Vector2 _input;
+
+    public void Move(InputAction.CallbackContext context)
     {
-        Debug.Log("Player moving!");
+        _input = context.ReadValue<Vector2>();
+        Debug.Log(_input);
     }
 }

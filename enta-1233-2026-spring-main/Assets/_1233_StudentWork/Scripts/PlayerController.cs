@@ -20,14 +20,16 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float jumpPower;
     private int _numberOfJumps;
-    [SerializeField] private int maxNumberOfJumps = 2;
+    [SerializeField] private int maxNumberOfJumps = 1;
 
     [SerializeField]
     private Animator _animator;
 
     private static readonly int Speed =
         Animator.StringToHash("Speed");
-
+    private bool isJumping;
+    private bool isLanded;
+        
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -39,7 +41,6 @@ public class PlayerController : MonoBehaviour
         ApplyRotation();
         ApplyMovement();
         AnimationParameters();
-               
     }
 
     private void ApplyRotation()
@@ -85,14 +86,28 @@ public class PlayerController : MonoBehaviour
         _numberOfJumps++;
         _velocity = jumpPower;
         //_velocity = jumpPower / _numberOfJumps;
+
+        _animator.SetBool("IsJumping", true);
+        isJumping = true;
+
     }
 
     private System.Collections.IEnumerator WaitForLanding()
     {
         yield return new WaitUntil(() => !IsGrounded());
+
+        _animator.SetBool("IsLanded", false);
+        isLanded = false;
+        _animator.SetBool("IsFalling", true);
+        
         yield return new WaitUntil(IsGrounded);
 
         _numberOfJumps = 0;
+        _animator.SetBool("IsLanded", true);
+        isLanded = true;
+        _animator.SetBool("IsJumping", false);
+        isJumping = false;
+        _animator.SetBool("IsFalling", false);
     }
 
     private void AnimationParameters()

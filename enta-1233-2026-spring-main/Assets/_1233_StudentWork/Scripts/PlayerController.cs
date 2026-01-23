@@ -40,6 +40,18 @@ public class PlayerController : MonoBehaviour
         ApplyGravity();
         ApplyRotation();
         ApplyMovement();
+
+        if (!IsGrounded())
+        {
+            _animator.SetBool("IsFalling", true);
+            _animator.SetBool("IsLanded", false);
+        }
+        else
+        {
+            _animator.SetBool("IsFalling", false);
+            _animator.SetBool("IsLanded", true);
+        }
+
         AnimationParameters();
     }
 
@@ -94,20 +106,12 @@ public class PlayerController : MonoBehaviour
 
     private System.Collections.IEnumerator WaitForLanding()
     {
-        yield return new WaitUntil(() => !IsGrounded());
-
-        _animator.SetBool("IsLanded", false);
-        isLanded = false;
-        _animator.SetBool("IsFalling", true);
-        
+        yield return new WaitUntil(() => !IsGrounded());       
         yield return new WaitUntil(IsGrounded);
 
         _numberOfJumps = 0;
-        _animator.SetBool("IsLanded", true);
-        isLanded = true;
         _animator.SetBool("IsJumping", false);
         isJumping = false;
-        _animator.SetBool("IsFalling", false);
     }
 
     private void AnimationParameters()

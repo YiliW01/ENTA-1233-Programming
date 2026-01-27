@@ -27,8 +27,6 @@ public class PlayerController : MonoBehaviour
 
     private static readonly int Speed =
         Animator.StringToHash("Speed");
-    private bool isJumping;
-    private bool isLanded;
         
     private void Awake()
     {
@@ -100,8 +98,7 @@ public class PlayerController : MonoBehaviour
         //_velocity = jumpPower / _numberOfJumps;
 
         _animator.SetBool("IsJumping", true);
-        isJumping = true;
-
+        
     }
 
     private System.Collections.IEnumerator WaitForLanding()
@@ -111,7 +108,6 @@ public class PlayerController : MonoBehaviour
         
         _numberOfJumps = 0;
         _animator.SetBool("IsJumping", false);
-        isJumping = false;
         _animator.SetBool("IsLanded", true);
     }
 
